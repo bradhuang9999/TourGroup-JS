@@ -1,7 +1,13 @@
-import DomArr from "../src/travel.js";
+/**
+ * @fileoverview Unit tests for the TourGroup class.
+ */
 
+import TourGroup from "../src/travel.js";
 
-describe('DomArr id getter', () => {
+/**
+ * Tests the id getter of the TourGroup class.
+ */
+describe('TourGroup id getter', () => {
     test('should return the id of the first element in the array', () => {
         // Create a test DOM structure
         document.body.innerHTML = `
@@ -9,17 +15,60 @@ describe('DomArr id getter', () => {
             <div id="element2"></div>
         `;
         
-        // Create a new instance of DomArr
-        const elements = new DomArr('#element1, #element2');
+        // Create a new instance of TourGroup
+        const elements = new TourGroup('#element1, #element2');
         
         // Assert that the id getter returns the id of the first element
         expect(elements.id).toBe('element1');
     });
 });
 
+/**
+ * Tests the children method of the TourGroup class.
+ */
+describe('Tree Traversal', () => {
+    test('[Children] should return the children of each element in the array', () => {
+        // Create a test DOM structure
+        document.body.innerHTML = `
+            <div id="parent">
+                <div id="child1"></div>
+                <div id="child2"></div>
+            </div>
+        `;
+        
+        // Create a new instance of TourGroup
+        const elements = new TourGroup('#parent');
+        
+        // Call the children method
+        const children = elements.children();
+        
+        // Assert that the children are the same as the children in the DOM structure
+        expect(children[0].id).toBe('child1');
+        expect(children[1].id).toBe('child2');
+    });
 
-describe('DomArr closest method', () => {
-    test('should return the closest element matching the given selector', () => {
+    test('[children] should return the children of each element filtered by a selector', () => {
+        // Create a test DOM structure
+        document.body.innerHTML = `
+            <div id="parent">
+                <div id="child1"></div>
+                <div id="child2"></div>
+                <span id="child3"></span>
+            </div>
+        `;
+        
+        // Create a new instance of TourGroup
+        const elements = new TourGroup('#parent');
+        
+        // Call the children method with a selector
+        const children = elements.children('div');
+        
+        // Assert that the children are the same as the children in the DOM structure
+        expect(children[0].id).toBe('child1');
+        expect(children[1].id).toBe('child2');
+    });
+
+    test('[closest] should return the closest element matching the given selector', () => {
         // Create a test DOM structure
         document.body.innerHTML = `
             <div id="parent">
@@ -29,8 +78,8 @@ describe('DomArr closest method', () => {
             </div>
         `;
         
-        // Create a new instance of DomArr
-        const elements = new DomArr('#target');
+        // Create a new instance of TourGroup
+        const elements = new TourGroup('#target');
         
         // Call the closest method with a selector
         const closestElement = elements.closest('#parent');
@@ -38,10 +87,7 @@ describe('DomArr closest method', () => {
         // Assert that the closest element is the parent element
         expect(closestElement.id).toBe('parent');
     });
-});
 
-
-describe('DomArr parentElement method', () => {
     test('should return the parent element of each element in the array', () => {
         // Create a test DOM structure
         document.body.innerHTML = `
@@ -51,8 +97,8 @@ describe('DomArr parentElement method', () => {
             </div>
         `;
         
-        // Create a new instance of DomArr
-        const elements = new DomArr('#child1, #child2');
+        // Create a new instance of TourGroup
+        const elements = new TourGroup('#child1, #child2');
         
         // Call the parentElement method
         const parentElements = elements.parentElement();
@@ -61,4 +107,253 @@ describe('DomArr parentElement method', () => {
         expect(parentElements.id).toBe('parent');
         expect(parentElements.id).toBe('parent');
     });
+
+    test('[querySelectorAll] should return the elements matching the given selector', () => {
+        // Create a test DOM structure
+        document.body.innerHTML = `
+            <div id="parent">
+                <div id="child1"></div>
+                <div id="child2" class='tmp-c'></div>
+            </div>
+        `;
+        
+        // Create a new instance of TourGroup
+        const elements = new TourGroup('#parent');
+        
+        // Call the querySelectorAll method with a selector
+        const children = elements.querySelectorAll('div.tmp-c');
+        
+        // Assert that the children are the same as the children in the DOM structure
+        expect(children.id).toBe('child2');
+    });
+
+    test('[nextElementSibling] should return the next element sibling', () => {
+        // Create a test DOM structure
+        document.body.innerHTML = `
+            <div id="parent">
+                <div id="sibling1"></div>
+                <div id="sibling2"></div>
+                <div id="sibling3"></div>
+            </div>
+        `;
+        
+        // Create a new instance of TourGroup
+        const elements = new TourGroup('#sibling1');
+        
+        // Call the nextElementSibling() method
+        const nextSibling = elements.nextElementSibling();
+        
+        // Assert that the nextSibling is the correct element
+        expect(nextSibling.id).toBe('sibling2');
+    });  
+    
+    test('[next] should return the next sibling matching the selector', () => {
+        // Create a test DOM structure
+        document.body.innerHTML = `
+            <div id="parent">
+                <div id="sibling1"></div>
+                <div id="sibling2" class="tmp-c"></div>
+                <div id="sibling3"></div>
+            </div>
+        `;
+        
+        // Create a new instance of TourGroup
+        const elements = new TourGroup('#sibling1');
+        
+        // Call the next(selector) method with a selector
+        const nextSibling = elements.next('.tmp-c');
+        
+        // Assert that the nextSibling is the correct element
+        expect(nextSibling.id).toBe('sibling2');
+    });   
+    
+    test('[nextUntil] should return the next siblings until the element matching the selector', () => {
+        // Create a test DOM structure
+        document.body.innerHTML = `
+            <div id="parent">
+                <div id="sibling1"></div>
+                <div id="sibling2"></div>
+                <div id="sibling3"></div>
+                <div id="sibling4" class="tmp-c"></div>
+                <div id="sibling5"></div>
+            </div>
+        `;
+        
+        // Create a new instance of TourGroup
+        const elements = new TourGroup('#sibling1');
+        
+        // Call the nextUntil(selector) method with a selector
+        const nextSiblings = elements.nextUntil('.tmp-c');
+        
+        // Assert that the nextSiblings are the correct elements
+        expect(nextSiblings.map(e => e.id)).toEqual(['sibling2', 'sibling3']);
+    });    
+
+    test('[offsetParent] should return the offset parent of each element in the set of matched elements', () => {
+        // Create a test DOM structure
+        document.body.innerHTML = `
+            <ul class="level-1">
+              <li class="item-i">I</li>
+              <li class="item-ii" style="position: relative;">II
+                <ul class="level-2">
+                  <li class="item-a">A</li>
+                  <li class="item-b">B
+                    <ul class="level-3">
+                      <li class="item-1">1</li>
+                      <li class="item-2">2</li>
+                      <li class="item-3">3</li>
+                    </ul>
+                  </li>
+                  <li class="item-c">C</li>
+                </ul>
+              </li>
+              <li class="item-iii">III</li>
+            </ul>
+        `;
+        
+        // Create a new instance of TourGroup
+        const elements = new TourGroup('li.item-a');
+        
+        // Call the offsetParent() method
+        const offsetParent = elements.offsetParent();
+        
+        // Assert that the offsetParent is the correct element
+        expect(offsetParent[0].classList).toBe('item-ii');
+    });   
+    
+    test('[parentElement] should return the parent element of each element in the set of matched elements', () => {
+        // Create a test DOM structure
+        document.body.innerHTML = `
+            <ul class="level-1">
+              <li class="item-i">I</li>
+              <li class="item-ii">II
+                <ul class="level-2">
+                  <li class="item-a">A</li>
+                  <li class="item-b">B
+                    <ul class="level-3">
+                      <li class="item-1">1</li>
+                      <li class="item-2">2</li>
+                      <li class="item-3">3</li>
+                    </ul>
+                  </li>
+                  <li class="item-c">C</li>
+                </ul>
+              </li>
+              <li class="item-iii">III</li>
+            </ul>
+        `;
+        
+        // Create a new instance of TourGroup
+        const elements = new TourGroup('li.item-a');
+        
+        // Call the parentElement() method
+        const parentElement = elements.parentElement();
+        
+        // Assert that the parentElement is the correct element
+        expect(parentElement[0].className).toBe('level-2');
+    });  
+    
+    test('[parentUntil] should return the parent elements until the element matching the selector', () => {
+        // Create a test DOM structure
+        document.body.innerHTML = `
+            <div id="grandparent">
+                <div id="parent">
+                    <div id="child"></div>
+                </div>
+            </div>
+        `;
+        
+        // Create a new instance of TourGroup
+        const elements = new TourGroup('#child');
+        
+        // Call the parentUntil(selector) method with a selector
+        const parents = elements.parentUntil('#grandparent');
+        
+        // Assert that the parents are the correct elements
+        expect(parents.map(e => e.id)).toEqual(['parent', 'grandparent']);
+    });    
+
+    describe('[prevElementSibling] prevElementSibling()', () => {
+        test('should return the previous element sibling', () => {
+            // Create a test DOM structure
+            document.body.innerHTML = `
+                <div id="parent">
+                    <div id="sibling1"></div>
+                    <div id="sibling2"></div>
+                    <div id="sibling3"></div>
+                </div>
+            `;
+            
+            // Create a new instance of TourGroup
+            const elements = new TourGroup('#sibling2');
+            
+            // Call the prevElementSibling() method
+            const prevSibling = elements.prevElementSibling();
+            
+            // Assert that the prevSibling is the correct element
+            expect(prevSibling.id).toBe('sibling1');
+        });    
+    });       
+    
+    test('[prev] should return the previous sibling matching the selector', () => {
+        // Create a test DOM structure
+        document.body.innerHTML = `
+            <div id="parent">
+                <div id="sibling1" class="tmp-c"></div>
+                <div id="sibling2"></div>
+                <div id="sibling3"></div>
+            </div>
+        `;
+        
+        // Create a new instance of TourGroup
+        const elements = new TourGroup('#sibling3');
+        
+        // Call the prev(selector) method with a selector
+        const prevSibling = elements.prev('.tmp-c');
+        
+        // Assert that the prevSibling is the correct element
+        expect(prevSibling.id).toBe('sibling1');
+    });    
+
+    test('[prevUntil] should return the previous siblings until the element matching the selector', () => {
+        // Create a test DOM structure
+        document.body.innerHTML = `
+            <div id="parent">
+                <div id="sibling1" class="tmp-c"></div>
+                <div id="sibling2" class="tmp-c"></div>
+                <div id="sibling3"></div>
+                <div id="sibling4"></div>
+            </div>
+        `;
+        
+        // Create a new instance of TourGroup
+        const elements = new TourGroup('#sibling4');
+        
+        // Call the prevUntil(selector) method with a selector
+        const prevSiblings = elements.prevUntil('.tmp-c');
+        
+        // Assert that the prevSiblings are the correct elements
+        expect(prevSiblings.map(e => e.id)).toEqual(['sibling3', 'sibling2', 'sibling1']);
+    });  
+    
+    test('[siblings] should return the siblings of each element in the set of matched elements', () => {
+        // Create a test DOM structure
+        document.body.innerHTML = `
+            <div id="parent">
+                <div id="sibling1"></div>
+                <div id="sibling2"></div>
+                <div id="sibling3"></div>
+            </div>
+        `;
+        
+        // Create a new instance of TourGroup
+        const elements = new TourGroup('#sibling2');
+        
+        // Call the siblings() method
+        const siblings = elements.siblings();
+        
+        // Assert that the siblings are the correct elements
+        expect(siblings.map(e => e.id)).toEqual(['sibling1', 'sibling3']);
+    });    
 });
+
