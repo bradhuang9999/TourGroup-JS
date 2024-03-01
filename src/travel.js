@@ -46,6 +46,12 @@ class TourGroup extends Array {
         return new TourGroup(selector, context);
     }
 
+
+    /* ************************************************************************* */
+    /* *************************** Tree Traversal ****************************** */
+    /* ************************************************************************* */
+
+
     /**
      * Get the children of each element in the set of matched elements, optionally filtered by a selector.
      * Similar to $.children(selector)
@@ -170,52 +176,45 @@ class TourGroup extends Array {
         }));
     }
 
-    prevElementSibling() {
-        return unique(this.map(ele => ele.prevElementSibling));
+    previousElementSibling() {
+        return unique(this.map(ele => ele.previousElementSibling));
     }
 
     prev(selector) {
         return unique(this.map(ele => {
-            const prevEl = el.prevElementSibling; 
+            const prevEl = ele.previousElementSibling; 
             if (!selector || (prevEl && prevEl.matches(selector))) {
                 return prevEl;
             }
-            return null;
+            return undefined;
         }));
     }
 
     prevUntil(selector) {
-        return unique(this.map(ele => {
+        return unique(this.flatMap(ele => {
             const prevEles = [];
-            let prevEl = ele.prevElementSibling;
+            let prevEl = ele.previousElementSibling;
             while (prevEl) {
                 if (selector && prevEl.matches(selector)) {
                     return prevEles;
                 }
                 prevEles.push(prevEl);
-                prevEl = prevEl.prevElementSibling;
+                prevEl = prevEl.previousElementSibling;
             }
             return prevEles;
         }));
     }
 
     siblings() {
-        return unique(this.map(ele => {
+        return unique(this.flatMap(ele => {
             return TourGroup.from(ele.parentElement.children).filter(child => child !== ele);
         }));
     }
 
-    /**
-     * Inserts content after each element in the TourGroup.
-     * @param {string|Node} content - The content to insert.
-     * @param {Function} func - The function to execute after the content is inserted.
-     */
-    after(content, func) {
-        for(let ele of this) {
-            ele.after(content, func);
-        }
-    }    
-    
+    /* ************************************************************************* */
+    /* ************************* Filtering Traversal *************************** */
+    /* ************************************************************************* */
+
     /**
      * Filters out elements that do not match the specified selector.
      * @param {string} selector - The selector string.
@@ -223,6 +222,80 @@ class TourGroup extends Array {
      */
     not(selector) {
         return this.filter(ele => !ele.matches(selector));
+    }
+
+
+    last() {
+        return this.length === 0 ? null : this[this.length-1];
+    }
+
+
+    /* ************************************************************************* */
+    /* *********************** DOM Insertion, Inside *************************** */
+    /* ************************************************************************* */
+    
+    
+    insertAdjacentHTML(position, text) {
+        for(let ele of this) {
+            ele.insertAdjacentHTML(position, text);
+        }
+    }
+
+    appendHTML(text) {
+        for(let ele of this) {
+            ele.insertAdjacentHTML('beforeend', text);
+        }
+    }
+    
+    prependHTML(text) {
+        for(let ele of this) {
+            ele.insertAdjacentHTML('afterbegin', text);
+        }
+    }
+
+    /**
+     * Gets the inner HTML of the first element in the TourGroup.
+     * @returns {string|undefined} The inner HTML of the first element, or undefined if the TourGroup is empty.
+     */
+    get innerHTML() {
+        return this.length === 0 ? undefined : this[0].innerHTML;
+    }
+
+    /**
+     * Sets the inner HTML for all elements in the TourGroup.
+     * @param {string} html - The HTML content to set.
+     */
+    set innerHTML(html) {
+        for(let ele of this) {
+            ele.innerHTML = html;
+        }
+    }
+
+    /**
+     * Sets the inner text for all elements in the TourGroup.
+     * @param {string} text - The text content to set.
+     */
+    set innerText(text) {
+        for(let ele of this) {
+            ele.innerText = text;
+        }
+    }    
+
+    /* ************************************************************************* */
+    /* *********************** DOM Insertion, Outside*************************** */
+    /* ************************************************************************* */
+    
+    afterHTML(text) {
+        for(let ele of this) {
+            ele.insertAdjacentHTML('afterend', text);
+        }
+    }
+    
+    
+    beforeHTML(text) {
+        for(let ele of this) {
+            ele.insertAdjacentHTML('beforebegin', text);
+        }
     }
     
     /**
@@ -271,34 +344,6 @@ class TourGroup extends Array {
             if (ele instanceof HTMLInputElement) {
                 ele.value = value;
             }
-        }
-    }
-
-    /**
-     * Gets the inner HTML of the first element in the TourGroup.
-     * @returns {string|undefined} The inner HTML of the first element, or undefined if the TourGroup is empty.
-     */
-    get innerHTML() {
-        return this.length === 0 ? undefined : this[0].innerHTML;
-    }
-
-    /**
-     * Sets the inner HTML for all elements in the TourGroup.
-     * @param {string} html - The HTML content to set.
-     */
-    set innerHTML(html) {
-        for(let ele of this) {
-            ele.innerHTML = html;
-        }
-    }
-
-    /**
-     * Sets the inner text for all elements in the TourGroup.
-     * @param {string} text - The text content to set.
-     */
-    set innerText(text) {
-        for(let ele of this) {
-            ele.innerText = text;
         }
     }
 
@@ -363,3 +408,4 @@ function unique(array) {
 }
 
 export default TourGroup;
+export {TourGroup}
