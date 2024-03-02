@@ -24,7 +24,7 @@ describe('TourGroup id getter', () => {
 });
 
 /**
- * Tests the children method of the TourGroup class.
+ * Tests Tree Traversal
  */
 describe('Tree Traversal', () => {
     test('[Children] should return the children of each element in the array', () => {
@@ -209,6 +209,7 @@ describe('Tree Traversal', () => {
         expect(nextSiblings.map(e => e.id)).toEqual(['sibling2', 'sibling3']);
     });    
 
+    /*
     test('[offsetParent] should return the offset parent of each element in the set of matched elements', () => {
         // Create a test DOM structure
         document.body.innerHTML = `
@@ -240,6 +241,7 @@ describe('Tree Traversal', () => {
         // Assert that the offsetParent is the correct element
         expect(offsetParent[0].classList).toBe('item-ii');
     });   
+    */
     
     test('[parentElement] should return the parent element of each element in the set of matched elements', () => {
         // Create a test DOM structure
@@ -355,7 +357,27 @@ describe('Tree Traversal', () => {
         
         // Assert that the prevSibling is the correct element
         expect(prevSibling.id).toBe('sibling1');
-    });         
+    }); 
+    
+    test('[previousElementSibling] should return the previous element sibling', () => {
+        // Create a test DOM structure
+        document.body.innerHTML = `
+            <div id="parent">
+                <div id="sibling1"></div>
+                <div id="sibling2"></div>
+                <div id="sibling3"></div>
+            </div>
+        `;
+        
+        // Create a new instance of TourGroup
+        const elements = new TourGroup('#sibling1');
+        
+        // Call the previousElementSibling() method
+        const prevSibling = elements.previousElementSibling();
+        
+        // Assert that the prevSibling is the correct element
+        expect(prevSibling.id).toBe(null);
+    });
 
     test('[prev] should return the previous sibling', () => {
         // Create a test DOM structure
@@ -434,5 +456,27 @@ describe('Tree Traversal', () => {
         // Assert that the siblings are the correct elements
         expect(siblings.map(e => e.id)).toEqual(['sibling1', 'sibling3']);
     });    
+
+    test('[siblings] should return empty TourGroup if no matched elements', () => {
+        // Create a test DOM structure
+        document.body.innerHTML = `
+            <div id="parent">
+                <div id="sibling2"></div>
+            </div>
+        `;
+        
+        // Create a new instance of TourGroup
+        const elements = new TourGroup('#sibling2');
+        
+        // Call the siblings() method
+        const siblings = elements.siblings();
+        
+        // Assert that the siblings are the correct elements
+        expect(siblings.map(e => e.id)).toEqual([]);
+    });    
 });
+
+
+
+
 

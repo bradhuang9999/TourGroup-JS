@@ -75,7 +75,7 @@ class TourGroup extends Array {
      * @returns {TourGroup} A new TourGroup instance containing the unique closest elements.
      */
     closest(selectors) {
-        return unique(this.map(ele => ele.closest(selectors)));
+        return unique(this.flatMap(ele => ele.closest(selectors)||[]));
     }
 
     /**
@@ -96,7 +96,7 @@ class TourGroup extends Array {
      * @returns {TourGroup} A new TourGroup instance containing the unique next sibling elements.
      */
     nextElementSibling() {
-        return unique(this.map(ele => ele.nextElementSibling));
+        return unique(this.flatMap(ele => ele.nextElementSibling||[]));
     }
 
     /**
@@ -106,12 +106,12 @@ class TourGroup extends Array {
      * @returns {TourGroup} A new TourGroup instance containing the unique next elements.
      */
     next(selector) {
-        return unique(this.map(ele => {
+        return unique(this.flatMap(ele => {
             const nextEl = ele.nextElementSibling; 
             if (!selector || (nextEl && nextEl.matches(selector))) {
                 return nextEl;
             }
-            return null;
+            return [];
         }));
     }
 
@@ -141,6 +141,7 @@ class TourGroup extends Array {
      * Similar to $.offsetParent()
      * @returns {TourGroup} A new TourGroup instance containing the unique offset parent elements.
      */
+    /*
     offsetParent() {
         return unique(this.map(ele => {
             var offsetParent = ele.offsetParent || document.body;
@@ -150,7 +151,7 @@ class TourGroup extends Array {
             return offsetParent;
         }));
     }
-    
+    */
     
     /**
      * Gets the parent element of each element in the TourGroup.
@@ -162,7 +163,7 @@ class TourGroup extends Array {
     }
 
     parentUntil(selector) {
-        return unique(this.map(ele => {
+        return unique(this.flatMap(ele => {
             const parentEles = [];
             let parentEl = ele.parentElement;
             while (parentEl) {
@@ -177,16 +178,16 @@ class TourGroup extends Array {
     }
 
     previousElementSibling() {
-        return unique(this.map(ele => ele.previousElementSibling));
+        return unique(this.flatMap(ele => ele.previousElementSibling||[]));
     }
 
     prev(selector) {
-        return unique(this.map(ele => {
+        return unique(this.flatMap(ele => {
             const prevEl = ele.previousElementSibling; 
             if (!selector || (prevEl && prevEl.matches(selector))) {
                 return prevEl;
             }
-            return undefined;
+            return [];
         }));
     }
 
@@ -224,6 +225,13 @@ class TourGroup extends Array {
         return this.filter(ele => !ele.matches(selector));
     }
 
+    has(selector) {
+        return this.filter(ele => ele.querySelector(selector));
+    }
+
+    first() {
+        return this.length === 0 ? null : this[0];
+    }
 
     last() {
         return this.length === 0 ? null : this[this.length-1];
@@ -252,34 +260,46 @@ class TourGroup extends Array {
             ele.insertAdjacentHTML('afterbegin', text);
         }
     }
-
-    /**
-     * Gets the inner HTML of the first element in the TourGroup.
-     * @returns {string|undefined} The inner HTML of the first element, or undefined if the TourGroup is empty.
-     */
-    get innerHTML() {
-        return this.length === 0 ? undefined : this[0].innerHTML;
+    
+    
+    outerHTML(html) {        
+        if (!arguments.length)
+            return this.length === 0 ? null : this[0].outerHTML;
+        for(let ele of this) {
+            ele.outerHTML = html;
+        }
+        //return this;//ele is replaced by html, so return this is meaningless
     }
 
-    /**
-     * Sets the inner HTML for all elements in the TourGroup.
-     * @param {string} html - The HTML content to set.
-     */
-    set innerHTML(html) {
+    innerHTML(html) {
+        if (!arguments.length)
+            return this[0] && this[0].innerHTML;
+        
         for(let ele of this) {
             ele.innerHTML = html;
-        }
+        }    
+        return this;
     }
 
-    /**
-     * Sets the inner text for all elements in the TourGroup.
-     * @param {string} text - The text content to set.
-     */
-    set innerText(text) {
+    innerText(text) {
+        if (!arguments.length)
+            return this.length === 0 ? null : this[0].innerText;
+
         for(let ele of this) {
             ele.innerText = text;
         }
-    }    
+        return this;            
+    }
+
+    textContent(text) {
+        if (!arguments.length)
+            return this.length === 0 ? null : this[0].textContent;
+        
+        for(let ele of this) {
+            ele.textContent = text;
+        }
+        return this;
+    }
 
     /* ************************************************************************* */
     /* *********************** DOM Insertion, Outside*************************** */
@@ -297,56 +317,39 @@ class TourGroup extends Array {
             ele.insertAdjacentHTML('beforebegin', text);
         }
     }
+
+
+    /* ************************************************************************* */
+    /* *************************** DOM Removal ********************************* */
+    /* ************************************************************************* */
     
-    /**
-     * Adds an event listener to each element in the TourGroup.
-     * @param {string} event - The event name.
-     * @param {Function} func - The event handler function.
-     * @param {boolean} useCapture - Specifies whether the event should be captured during the event propagation.
-     */
-    addEventListener(event, func, useCapture) {
+    empty() {
         for(let ele of this) {
-            ele.addEventListener(event, func, useCapture);
+            ele.replaceChildren();
         }
-    }    
-
-    
-    /**
-     * Gets the ID of the first element in the TourGroup.
-     * @returns {string|undefined} The ID of the first element, or undefined if the TourGroup is empty.
-     */
-    get id()  {
-        return this.length === 0 ? undefined : this[0].id;
+        return this;
     }
 
-    /**
-     * Gets the number of elements in the TourGroup.
-     * @returns {number} The number of elements.
-     */
-    get length() {
-        return this.length;
-    }
-  
-    /**
-     * Gets the value of the first input element in the TourGroup.
-     * @returns {string|undefined} The value of the first input element, or undefined if the TourGroup is empty or does not contain an input element.
-     */
-    get value() {
-        return this.length === 0 ? undefined : this[0].value;
-    }
-  
-    /**
-     * Sets the value of all input elements in the TourGroup.
-     * @param {string} value - The value to set.
-     */
-    set value(value) {
+    remove() {
         for(let ele of this) {
-            if (ele instanceof HTMLInputElement) {
-                ele.value = value;
+            ele.remove();
+        }
+        return this;
+    }
+    
+    unwrap() {
+        for(let ele of this) {
+            const parent = ele.parentElement;
+            if (parent) {
+                parent.replaceWith(...parent.childNodes);
             }
         }
+        //return this;//ele is replaced, so return this is meaningless
     }
 
+    /* ************************************************************************* */
+    /* *************************** Class Attribute ***************************** */
+    /* ************************************************************************* */
     /**
      * Adds a class to all elements in the TourGroup.
      * @param {string} className - The class name to add.
@@ -376,6 +379,93 @@ class TourGroup extends Array {
             ele.classList.toggle(className);
         }
     }
+
+    hasClass(className) {
+        return this.some(ele => ele.classList.contains(className));
+    }
+
+    /* ************************************************************************* */
+    /* *************************** General Attributes ************************** */
+    /* ************************************************************************* */
+
+    getAttribute(name) {
+        return this.length === 0 ? null : this[0].getAttribute(name);
+    }
+
+    setAttribute(name, value) {
+        for(let ele of this) {
+            ele.setAttribute(name, value);
+        }
+        return this;
+    }
+
+    /**
+     * Gets the value of the first input element in the TourGroup.
+     * @returns {string|null} The value of the first input element, or null if the TourGroup is empty or does not contain an input element.
+     */
+    get value() {
+        return this.length === 0 ? null : this[0].value;
+    }
+  
+    /**
+     * Sets the value of all input elements in the TourGroup.
+     * @param {string} value - The value to set.
+     */
+    set value(value) {
+        for(let ele of this) {
+            if (ele instanceof HTMLInputElement) {
+                ele.value = value;
+            }
+        }
+    }
+
+    css(property, value) {
+        if (arguments.length === 1) {
+            return this.length === 0 ? null : window.getComputedStyle(this[0]).getPropertyValue(property);
+        }
+        for(let ele of this) {
+            ele.style[property] = value;
+        }
+        return this;
+    }
+
+
+    /**
+     * Adds an event listener to each element in the TourGroup.
+     * @param {string} event - The event name.
+     * @param {Function} func - The event handler function.
+     * @param {boolean} useCapture - Specifies whether the event should be captured during the event propagation.
+     */
+    addEventListener(event, func, useCapture) {
+        for(let ele of this) {
+            ele.addEventListener(event, func, useCapture);
+        }
+    }    
+
+    removeEventListener(event, func, useCapture) {
+        for(let ele of this) {
+            ele.removeEventListener(event, func, useCapture);
+        }
+    }
+    
+    /**
+     * Gets the ID of the first element in the TourGroup.
+     * @returns {string|null} The ID of the first element, or null if the TourGroup is empty.
+     */
+    get id()  {
+        return this.length === 0 ? null : this[0].id;
+    }
+
+    /**
+     * Gets the number of elements in the TourGroup.
+     * @returns {number} The number of elements.
+     */
+    get length() {
+        return this.length;
+    }
+  
+
+
 }
 
 /**
