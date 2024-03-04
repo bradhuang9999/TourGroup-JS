@@ -440,11 +440,31 @@ class TourGroup extends Array {
         for(let ele of this) {
             ele.addEventListener(event, func, useCapture);
         }
-    }    
+    }
+
+    addDelegateEventListener(event, selector, func, useCapture) {
+        for(let ele of this) {
+            ele.addEventListener(event, e => {
+                if (e.target.matches(selector)) {
+                    func(e);
+                }
+            }, useCapture);
+        }
+    }
 
     removeEventListener(event, func, useCapture) {
         for(let ele of this) {
             ele.removeEventListener(event, func, useCapture);
+        }
+    }
+
+    removeDelegateEventListener(event, selector, func, useCapture) {
+        for(let ele of this) {
+            ele.removeEventListener(event, e => {
+                if (e.target.matches(selector)) {
+                    func(e);
+                }
+            }, useCapture);
         }
     }
     
