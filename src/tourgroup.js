@@ -429,6 +429,9 @@ class TourGroup extends Array {
         return this;
     }
 
+    /* ************************************************************************* */
+    /* *************************** Event Handling ****************************** */
+    /* ************************************************************************* */
 
     /**
      * Adds an event listener to each element in the TourGroup.
@@ -443,12 +446,20 @@ class TourGroup extends Array {
     }
 
     addDelegateEventListener(event, selector, func, useCapture) {
+        const handler = e => {
+            if (e.target.matches(selector)) {
+                func(e);
+            }
+        };
         for(let ele of this) {
-            ele.addEventListener(event, e => {
-                if (e.target.matches(selector)) {
-                    func(e);
-                }
-            }, useCapture);
+            ele.addEventListener(event, handler, useCapture);
+        }
+        return handler;
+    }
+
+    addOneTimeEventListener(event, func, useCapture) {
+        for(let ele of this) {
+            ele.addEventListener(event, func, {once: true, capture: useCapture});
         }
     }
 
@@ -458,13 +469,9 @@ class TourGroup extends Array {
         }
     }
 
-    removeDelegateEventListener(event, selector, func, useCapture) {
+    trigger(event, data) {
         for(let ele of this) {
-            ele.removeEventListener(event, e => {
-                if (e.target.matches(selector)) {
-                    func(e);
-                }
-            }, useCapture);
+            ele.dispatchEvent(new Event(event, data));
         }
     }
     
