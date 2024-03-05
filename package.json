@@ -11,7 +11,9 @@
         "webpack-cli": "^5.1.4"
     },
     "scripts": {
-        "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+        "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+        "build": "webpack --config webpack.config.cjs",
+        "doc": "jsdoc2md .\\src\\tourgroup.js > documentation.md"
     },
     "jest": {
         "testEnvironment": "jsdom"
