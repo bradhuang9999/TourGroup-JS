@@ -1,3 +1,30 @@
+/******/ // The require scope
+/******/ var __webpack_require__ = {};
+/******/ 
+/************************************************************************/
+/******/ /* webpack/runtime/define property getters */
+/******/ (() => {
+/******/ 	// define getter functions for harmony exports
+/******/ 	__webpack_require__.d = (exports, definition) => {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 			}
+/******/ 		}
+/******/ 	};
+/******/ })();
+/******/ 
+/******/ /* webpack/runtime/hasOwnProperty shorthand */
+/******/ (() => {
+/******/ 	__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ })();
+/******/ 
+/************************************************************************/
+var __webpack_exports__ = {};
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   y: () => (/* binding */ TourGroup)
+/* harmony export */ });
 /*
 Reference:
 - https://javascript.info/extend-natives
@@ -535,5 +562,8 @@ function unique(array) {
     ));
 }
 
-export default TourGroup;
-export {TourGroup}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TourGroup);
+
+var __webpack_exports__TourGroup = __webpack_exports__.y;
+var __webpack_exports__default = __webpack_exports__.A;
+export { __webpack_exports__TourGroup as TourGroup, __webpack_exports__default as default };
