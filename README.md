@@ -1,7 +1,7 @@
 # TourGroup js
 ## Traverse and manipulate the DOM similar to browser-native functions.
 
-![Build Status](https://github.com/bradhuang9999/TourGroup.js/actions/workflows/main.yml/badge.svg)
+![Build Status](https://github.com/bradhuang9999/TourGroup-js/actions/workflows/main.yml/badge.svg)
 ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
 <br>
