@@ -17,7 +17,7 @@ class TourGroup extends Array {
      * @param {string|Element[]|Element|Window} selector - The selector string, array of elements, single element, or window object.
      * @param {Element} context - The context element to search within.
      * @returns {TourGroup} The TourGroup instance.
-     * @example new Traversal('.my-class');
+     * @example new TourGroup('.my-class');
      */
     constructor(selector, context) {
         super();
@@ -45,9 +45,9 @@ class TourGroup extends Array {
      * @param {string|Element[]|Element|Window} selector - The selector string, array of elements, single element, or window object.
      * @param {Element} context - The context element to search within.
      * @returns {TourGroup} The TourGroup instance.
-     * @example Traversal.init('.my-class');
+     * @example TourGroup.at('.my-class');
      */
-    static init(selector, context) {
+    static at(selector, context) {
         return new TourGroup(selector, context);
     }
 
@@ -62,7 +62,7 @@ class TourGroup extends Array {
      * Similar to $.children(selector)
      * @param {string} selector - Optional. A string containing a selector expression to match the children against.
      * @returns {TourGroup} A new TourGroup instance containing the unique children elements.
-     * @example ToupGroup.init('.my-class').children();
+     * @example ToupGroup.at('.my-class').children();
      */
     children(selector) {
         return unique(this.flatMap(ele => {
@@ -79,7 +79,7 @@ class TourGroup extends Array {
      * Similar to $.closest(selector)
      * @param {string} selectors - The selector string.
      * @returns {TourGroup} A new TourGroup instance containing the unique closest elements.
-     * @example ToupGroup.init('.my-class').closest('.my-parent');
+     * @example ToupGroup.at('.my-class').closest('.my-parent');
      */
     closest(selectors) {
         return unique(this.flatMap(ele => ele.closest(selectors)||[]));
@@ -90,7 +90,7 @@ class TourGroup extends Array {
      * Similar to $.find(selector)
      * @param {string} selector - The selector string.
      * @returns {TourGroup} A new TourGroup instance containing the unique descendant elements.
-     * @example ToupGroup.init('.my-class').querySelectorAll('.my-descendant');
+     * @example ToupGroup.at('.my-class').querySelectorAll('.my-descendant');
      */
     querySelectorAll(selector) {
         const subEles = this.flatMap(ele => {
@@ -102,7 +102,7 @@ class TourGroup extends Array {
     /**
      * Gets the next sibling element of each element in the TourGroup.
      * @returns {TourGroup} A new TourGroup instance containing the unique next sibling elements.
-     * @example ToupGroup.init('.my-class').nextElementSibling();
+     * @example ToupGroup.at('.my-class').nextElementSibling();
      */
     nextElementSibling() {
         return unique(this.flatMap(ele => ele.nextElementSibling||[]));
@@ -113,7 +113,7 @@ class TourGroup extends Array {
      * Similar to $.next(selector)
      * @param {string} selector - The selector string.
      * @returns {TourGroup} A new TourGroup instance containing the unique next elements.
-     * @example ToupGroup.init('.my-class').next('.my-next');
+     * @example ToupGroup.at('.my-class').next('.my-next');
      */
     next(selector) {
         return unique(this.flatMap(ele => {
@@ -130,7 +130,7 @@ class TourGroup extends Array {
      * Similar to $.nextUntil(selector)
      * @param {string} selector - The selector string.
      * @returns {TourGroup} A new TourGroup instance containing the unique following sibling elements.
-     * @example ToupGroup.init('.my-class').nextUntil('.my-next');
+     * @example ToupGroup.at('.my-class').nextUntil('.my-next');
      */
     nextUntil(selector) {
         return unique(this.flatMap(ele => {
@@ -168,7 +168,7 @@ class TourGroup extends Array {
      * Gets the parent element of each element in the TourGroup.
      * Similar to $.parent()
      * @returns {TourGroup} A new TourGroup instance containing the unique parent elements.
-     * @example ToupGroup.init('.my-class').parentElement();
+     * @example ToupGroup.at('.my-class').parentElement();
      */
     parentElement() {
         return unique(this.map(ele => ele.parentElement));
@@ -179,7 +179,7 @@ class TourGroup extends Array {
      * Similar to $.parentsUntil(selector)
      * @param {string} selector - The selector string.
      * @returns {TourGroup} A new TourGroup instance containing the unique ancestor elements.
-     * @example ToupGroup.init('.my-class').parentsUntil('.my-ancestor');
+     * @example ToupGroup.at('.my-class').parentsUntil('.my-ancestor');
      */
     parentUntil(selector) {
         return unique(this.flatMap(ele => {
@@ -199,7 +199,7 @@ class TourGroup extends Array {
     /**
      * Gets the previous sibling element of each element in the TourGroup.
      * @returns {TourGroup} A new TourGroup instance containing the unique previous sibling elements.
-     * @example ToupGroup.init('.my-class').previousElementSibling();
+     * @example ToupGroup.at('.my-class').previousElementSibling();
      */
     previousElementSibling() {
         return unique(this.flatMap(ele => ele.previousElementSibling||[]));
@@ -210,7 +210,7 @@ class TourGroup extends Array {
      * Similar to $.prev(selector)
      * @param {string} selector - The selector string.
      * @returns {TourGroup} A new TourGroup instance containing the unique previous elements.
-     * @example ToupGroup.init('.my-class').prev('.my-prev');
+     * @example ToupGroup.at('.my-class').prev('.my-prev');
      */
     prev(selector) {
         return unique(this.flatMap(ele => {
@@ -227,7 +227,7 @@ class TourGroup extends Array {
      * Similar to $.prevUntil(selector)
      * @param {string} selector - The selector string.
      * @returns {TourGroup} A new TourGroup instance containing the unique preceding sibling elements.
-     * @example ToupGroup.init('.my-class').prevUntil('.my-prev');
+     * @example ToupGroup.at('.my-class').prevUntil('.my-prev');
      */
     prevUntil(selector) {
         return unique(this.flatMap(ele => {
@@ -248,7 +248,7 @@ class TourGroup extends Array {
      * Gets all sibling elements of each element in the set of matched elements.
      * Similar to $.siblings()
      * @returns {TourGroup} A new TourGroup instance containing the unique sibling elements.
-     * @example ToupGroup.init('.my-class').siblings();
+     * @example ToupGroup.at('.my-class').siblings();
      */
     siblings() {
         return unique(this.flatMap(ele => {
@@ -264,7 +264,7 @@ class TourGroup extends Array {
      * Filters out elements that do not match the specified selector.
      * @param {string} selector - The selector string.
      * @returns {TourGroup} A new TourGroup instance containing the filtered elements.
-     * @example ToupGroup.init('.my-class').not('.my-filter');
+     * @example ToupGroup.at('.my-class').not('.my-filter');
      */
     not(selector) {
         return this.filter(ele => !ele.matches(selector));
@@ -274,7 +274,7 @@ class TourGroup extends Array {
      * Filters out elements that do not have any descendants that match the specified selector.
      * @param {string} selector - The selector string.
      * @returns {TourGroup} A new TourGroup instance containing the filtered elements.
-     * @example ToupGroup.init('.my-class').has('.my-descendant');
+     * @example ToupGroup.at('.my-class').has('.my-descendant');
      */
     has(selector) {
         return this.filter(ele => ele.querySelector(selector));
@@ -283,7 +283,7 @@ class TourGroup extends Array {
     /**
      * Returns the first element of the TourGroup.
      * @returns {Element|null} The first element of the TourGroup, or null if the TourGroup is empty.
-     * @example ToupGroup.init('.my-class').first();
+     * @example ToupGroup.at('.my-class').first();
      */
     first() {
         return this.length === 0 ? null : this[0];
@@ -292,7 +292,7 @@ class TourGroup extends Array {
     /**
      * Returns the last element of the TourGroup.
      * @returns {Element|null} The last element of the TourGroup, or null if the TourGroup is empty.
-     * @example ToupGroup.init('.my-class').last();
+     * @example ToupGroup.at('.my-class').last();
      */
     last() {
         return this.length === 0 ? null : this[this.length-1];
@@ -309,7 +309,7 @@ class TourGroup extends Array {
      * @param {string} position - The position relative to the element where the HTML content should be inserted. Possible values: 'beforebegin', 'afterbegin', 'beforeend', 'afterend'.
      * @param {string} text - The HTML content to be inserted.
      * @returns {TourGroup} The current instance of the collection.
-     * @example ToupGroup.init('.my-class').insertAdjacentHTML('beforeend', '<p>Some text</p>');
+     * @example ToupGroup.at('.my-class').insertAdjacentHTML('beforeend', '<p>Some text</p>');
      */
     insertAdjacentHTML(position, text) {
         for(let ele of this) {
@@ -322,7 +322,7 @@ class TourGroup extends Array {
      * Appends HTML content to the end of each element in the TourGroup.
      * @param {string} text - The HTML content to be appended.
      * @returns {TourGroup} The current instance of the collection.
-     * @example ToupGroup.init('.my-class').appendHTML('<p>Some text</p>');
+     * @example ToupGroup.at('.my-class').appendHTML('<p>Some text</p>');
      */
     appendHTML(text) {
         for(let ele of this) {
@@ -335,7 +335,7 @@ class TourGroup extends Array {
      * Prepends HTML content to the beginning of each element in the TourGroup.
      * @param {string} text - The HTML content to be prepended.
      * @returns {TourGroup} The current instance of the collection.
-     * @example ToupGroup.init('.my-class').prependHTML('<p>Some text</p>');
+     * @example ToupGroup.at('.my-class').prependHTML('<p>Some text</p>');
      */
     prependHTML(text) {
         for(let ele of this) {
@@ -349,8 +349,8 @@ class TourGroup extends Array {
      * Sets or gets the outer HTML of each element in the TourGroup.
      * @param {string} [html] - Optional. The HTML content to set as the outer HTML of each element. If not provided, returns the outer HTML of the first element in the TourGroup.
      * @returns {string|undefined} The outer HTML of the first element in the TourGroup, or undefined if the HTML content was set.
-     * @example ToupGroup.init('.my-class').outerHTML('<p>Some text</p>');
-     * @example var htmlCode = ToupGroup.init('.my-class').outerHTML();
+     * @example ToupGroup.at('.my-class').outerHTML('<p>Some text</p>');
+     * @example var htmlCode = ToupGroup.at('.my-class').outerHTML();
      */
     outerHTML(html) {        
         if (!arguments.length)
@@ -365,8 +365,8 @@ class TourGroup extends Array {
      * Sets or gets the inner HTML of each element in the TourGroup.
      * @param {string} [html] - Optional. The HTML content to set as the inner HTML of each element. If not provided, returns the inner HTML of the first element in the TourGroup.
      * @returns {string|undefined} The inner HTML of the first element in the TourGroup, or undefined if the HTML content was set.
-     * @example ToupGroup.init('.my-class').innerHTML('<p>Some text</p>');
-     * @example var htmlCode = ToupGroup.init('.my-class').innerHTML();
+     * @example ToupGroup.at('.my-class').innerHTML('<p>Some text</p>');
+     * @example var htmlCode = ToupGroup.at('.my-class').innerHTML();
      */
     innerHTML(html) {
         if (!arguments.length)
@@ -382,8 +382,8 @@ class TourGroup extends Array {
      * Sets or retrieves the inner text content of each element in the collection.
      * @param {string} [text] - The text to set as the inner text content. If not provided, retrieves the inner text content of the first element in the collection.
      * @returns {Object} - The current instance of the collection.
-     * @example ToupGroup.init('.my-class').innerText('Some text');
-     * @example var text = ToupGroup.init('.my-class').innerText();
+     * @example ToupGroup.at('.my-class').innerText('Some text');
+     * @example var text = ToupGroup.at('.my-class').innerText();
      */
     innerText(text) {
         if (!arguments.length)
@@ -399,8 +399,8 @@ class TourGroup extends Array {
      * Gets or sets the text content of the elements in the collection.
      * @param {string} [text] - The text content to set. If not provided, returns the text content of the first element in the collection.
      * @returns {TourGroup} - The TourGroup instance.
-     * @example ToupGroup.init('.my-class').textContent('Some text');
-     * @example var text = ToupGroup.init('.my-class').textContent();
+     * @example ToupGroup.at('.my-class').textContent('Some text');
+     * @example var text = ToupGroup.at('.my-class').textContent();
      */
     textContent(text) {
         if (!arguments.length)
@@ -420,7 +420,7 @@ class TourGroup extends Array {
      * Inserts the specified HTML content after each element in the collection.     * 
      * @param {string} text - The HTML content to insert.
      * @returns {TourGroup} The current instance of the collection.
-     * @example ToupGroup.init('.my-class').afterHTML('<p>Some text</p>');
+     * @example ToupGroup.at('.my-class').afterHTML('<p>Some text</p>');
      */
     afterHTML(text) {
         for(let ele of this) {
@@ -434,7 +434,7 @@ class TourGroup extends Array {
      * Inserts the specified HTML content before each element in the collection.
      * @param {string} text - The HTML content to insert.
      * @returns {TourGroup} The current instance of the collection.
-     * @example ToupGroup.init('.my-class').beforeHTML('<p>Some text</p>');
+     * @example ToupGroup.at('.my-class').beforeHTML('<p>Some text</p>');
      */
     beforeHTML(text) {
         for(let ele of this) {
@@ -451,7 +451,7 @@ class TourGroup extends Array {
     /**
      * Removes all child elements from the current element.
      * @returns {TourGroup} The current TourGroup instance.
-     * @example ToupGroup.init('.my-class').empty();
+     * @example ToupGroup.at('.my-class').empty();
      */
     empty() {
         for(let ele of this) {
@@ -463,7 +463,7 @@ class TourGroup extends Array {
     /**
      * Removes all elements from the tour group.
      * @returns {TourGroup} The updated tour group object.
-     * @example ToupGroup.init('.my-class').remove();
+     * @example ToupGroup.at('.my-class').remove();
      */
     remove() {
         for(let ele of this) {
@@ -474,7 +474,7 @@ class TourGroup extends Array {
     
     /**
      * Unwraps each element in the tour group by replacing it with its child nodes.
-     * @example ToupGroup.init('.my-class').unwrap();
+     * @example ToupGroup.at('.my-class').unwrap();
      */
     unwrap() {
         for(let ele of this) {
@@ -493,7 +493,7 @@ class TourGroup extends Array {
      * Adds a class to all elements in the TourGroup.
      * @param {string} className - The class name to add.
      * @returns {TourGroup} The current instance of the collection.
-     * @example ToupGroup.init('.my-class').addClass('my-new-class');
+     * @example ToupGroup.at('.my-class').addClass('my-new-class');
      */
     addClass(className) {
         for(let ele of this) {
@@ -506,7 +506,7 @@ class TourGroup extends Array {
      * Removes a class from all elements in the TourGroup.
      * @param {string} className - The class name to remove.
      * @returns {TourGroup} The current instance of the collection.
-     * @example ToupGroup.init('.my-class').removeClass('my-old-class');
+     * @example ToupGroup.at('.my-class').removeClass('my-old-class');
      */
     removeClass(className) {
         for(let ele of this) {
@@ -519,7 +519,7 @@ class TourGroup extends Array {
      * Toggles a class for all elements in the TourGroup.
      * @param {string} className - The class name to toggle.
      * @returns {TourGroup} The current instance of the collection.
-     * @example ToupGroup.init('.my-class').toggleClass('my-class');
+     * @example ToupGroup.at('.my-class').toggleClass('my-class');
      */
     toggleClass(className) {
         for(let ele of this) {
@@ -532,7 +532,7 @@ class TourGroup extends Array {
      * Checks if any element in the tour group has the specified class.
      * @param {string} className - The class name to check for.
      * @returns {boolean} - Returns true if any element has the specified class, otherwise false.
-     * @example ToupGroup.init('.my-class').hasClass('my-class');
+     * @example ToupGroup.at('.my-class').hasClass('my-class');
      */
     hasClass(className) {
         return this.some(ele => ele.classList.contains(className));
@@ -546,7 +546,7 @@ class TourGroup extends Array {
      * Retrieves the value of the specified attribute from the first element in the collection.
      * @param {string} name - The name of the attribute to retrieve.
      * @returns {string|null} - The value of the attribute, or null if the collection is empty.
-     * @example ToupGroup.init('.my-class').getAttribute('data-id');
+     * @example ToupGroup.at('.my-class').getAttribute('data-id');
      */
     getAttribute(name) {
         return this.length === 0 ? null : this[0].getAttribute(name);
@@ -558,7 +558,7 @@ class TourGroup extends Array {
      * @param {string} name - The name of the attribute to set.
      * @param {string} value - The value to set for the attribute.
      * @returns {TourGroup} - The TourGroup instance with the updated attribute values.
-     * @example ToupGroup.init('.my-class').setAttribute('data-myattr', '123');
+     * @example ToupGroup.at('.my-class').setAttribute('data-myattr', '123');
      */
     setAttribute(name, value) {
         for(let ele of this) {
@@ -571,8 +571,8 @@ class TourGroup extends Array {
      * Sets or gets the value of the first HTMLInputElement in the collection.
      * @param {string} [value] - The value to set.
      * @returns {TourGroup} - The TourGroup instance.
-     * @example ToupGroup.init('.my-class').value('Some text');
-     * @example var text = ToupGroup.init('.my-class').value();
+     * @example ToupGroup.at('.my-class').value('Some text');
+     * @example var text = ToupGroup.at('.my-class').value();
      */
     value(value) {
         if (!arguments.length)
@@ -610,8 +610,8 @@ class TourGroup extends Array {
      * @param {string} property
      * @param {string} value
      * @returns {TourGroup} - The TourGroup instance with the updated CSS property values.
-     * @example ToupGroup.init('.my-class').css('color', 'red');
-     * @example var color = ToupGroup.init('.my-class').css('color');
+     * @example ToupGroup.at('.my-class').css('color', 'red');
+     * @example var color = ToupGroup.at('.my-class').css('color');
      */
     css(property, value) {
         if (arguments.length === 1) {
@@ -633,7 +633,7 @@ class TourGroup extends Array {
      * @param {Function} func - The event handler function.
      * @param {boolean} useCapture - Specifies whether the event should be captured during the event propagation.
      * @returns {TourGroup} - The current instance of the collection.
-     * @example ToupGroup.init('.my-class').addEventListener('click', function() { alert('Hello!'); });
+     * @example ToupGroup.at('.my-class').addEventListener('click', function() { alert('Hello!'); });
      */
     addEventListener(event, func, useCapture) {
         for(let ele of this) {
@@ -651,8 +651,8 @@ class TourGroup extends Array {
      * @param {Function} func - The callback function to be executed when the event occurs.
      * @param {boolean} [useCapture=false] - Specifies whether the event should be captured during the event propagation.
      * @returns {Function} - The event handler function that was added as the event listener.
-     * @example var handler = ToupGroup.init('.my-class').addDelegateEventListener('click', '.my-child', function() { alert('Hello!'); });
-     *          ToupGroup.init('.my-class').removeEventListener('click', handler);
+     * @example var handler = ToupGroup.at('.my-class').addDelegateEventListener('click', '.my-child', function() { alert('Hello!'); });
+     *          ToupGroup.at('.my-class').removeEventListener('click', handler);
      */
     addDelegateEventListener(event, selector, func, useCapture) {
         const handler = e => {
@@ -673,7 +673,7 @@ class TourGroup extends Array {
      * @param {Function} func - The callback function to be executed when the event is triggered.
      * @param {boolean} useCapture - Specifies whether the event should be captured during the event propagation.
      * @returns {TourGroup} - The current instance of the collection.
-     * @example ToupGroup.init('.my-class').addOneTimeEventListener('click', function() { alert('Hello!'); });
+     * @example ToupGroup.at('.my-class').addOneTimeEventListener('click', function() { alert('Hello!'); });
      */
     addOneTimeEventListener(event, func, useCapture) {
         for(let ele of this) {
@@ -689,7 +689,7 @@ class TourGroup extends Array {
      * @param {Function} func - The listener function to remove.
      * @param {boolean} useCapture - Specifies whether to use event capturing.
      * @returns {TourGroup} - The current instance of the collection.
-     * @example ToupGroup.init('.my-class').removeEventListener('click', myFunction);
+     * @example ToupGroup.at('.my-class').removeEventListener('click', myFunction);
      */
     removeEventListener(event, func, useCapture) {
         for(let ele of this) {
@@ -703,7 +703,7 @@ class TourGroup extends Array {
      * @param {string} event - The name of the event to trigger.
      * @param {Object} data - Optional. An object containing custom data to pass to the event.
      * @returns {TourGroup} - The current instance of the collection.
-     * @example ToupGroup.init('.my-class').trigger('click');
+     * @example ToupGroup.at('.my-class').trigger('click');
      */ 
     trigger(event, data) {
         for(let ele of this) {
@@ -715,7 +715,7 @@ class TourGroup extends Array {
     /**
      * Gets the ID of the first element in the TourGroup.
      * @returns {string|null} The ID of the first element, or null if the TourGroup is empty.
-     * @example var id = ToupGroup.init('.my-class').id();
+     * @example var id = ToupGroup.at('.my-class').id();
      */
     get id()  {
         return this.length === 0 ? null : this[0].id;
@@ -724,7 +724,7 @@ class TourGroup extends Array {
     /**
      * Gets the number of elements in the TourGroup.
      * @returns {number} The number of elements.
-     * @example var count = ToupGroup.init('.my-class').length;
+     * @example var count = ToupGroup.at('.my-class').length;
      */
     get length() {
         return this.length;

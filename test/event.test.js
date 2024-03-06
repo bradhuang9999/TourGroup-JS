@@ -17,7 +17,7 @@ describe('TourGroup Event Listeners', () => {
     });
 
     test('addEventListener should add event listener to each element', () => {
-        let tourGroup = new TourGroup('.child');
+        let tourGroup = TourGroup.at('.child');
         const mockFunc = jest.fn();
         tourGroup.addEventListener('click', mockFunc);
         
@@ -29,7 +29,7 @@ describe('TourGroup Event Listeners', () => {
     });
 
     test('addDelegateEventListener should add event listener to matching elements', () => {
-        let tourGroup = new TourGroup('.parent');
+        let tourGroup = TourGroup.at('.parent');
         const mockFunc = jest.fn();
         tourGroup.addDelegateEventListener('click', '.child', mockFunc);
 
@@ -41,7 +41,7 @@ describe('TourGroup Event Listeners', () => {
     });
 
     test('addOneTimeEventListener should add event listener that triggers only once', () => {
-        let tourGroup = new TourGroup('.parent');
+        let tourGroup = TourGroup.at('.parent');
         const mockFunc = jest.fn();
         tourGroup.addOneTimeEventListener('click', mockFunc);
 
@@ -53,7 +53,7 @@ describe('TourGroup Event Listeners', () => {
     });
 
     test('removeEventListener should remove event listener from each element', () => {
-        let tourGroup = new TourGroup('.parent');
+        let tourGroup = TourGroup.at('.parent');
         const mockFunc = jest.fn();
         tourGroup.addEventListener('click', mockFunc);        
         tourGroup.removeEventListener('click', mockFunc);
