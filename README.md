@@ -5,7 +5,8 @@
 ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
 <br>
-[Library Documentation](./documentation.md)
+
+[Library Documentation](documentation.md)
 
 ## Why TourGroup
 - Lightweight: Less than 10KB.
@@ -15,8 +16,14 @@
 - Extends Array, providing native array-related functions.
 - Chainable interface for ease of use.
 
+## Getting Start
+CDN: 
+- Traditional: https://cdn.jsdelivr.net/gh/bradhuang9999/TourGroup-JS@1.0.0/dist/tourgroup.min.js
+- ES Module: https://cdn.jsdelivr.net/gh/bradhuang9999/TourGroup-JS@1.0.0/dist/tourgroup.esm.min.js
+
 ## Example Code
 ```js
+import TourGroup from 'tourgroup.js';//ES Module
 var tourGroup = TourGroup.at('.class1').querySelectorAll('span.class2').has('i');
 tourGroup.setAttribute('data-my-attr', 'true')
          .addEventListener('click', () => {console.log('clicked')});
