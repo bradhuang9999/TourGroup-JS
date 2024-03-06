@@ -1,4 +1,4 @@
-name: Build, Test, Release, and Deploy
+name: Build
 
 on:
   push:
@@ -21,7 +21,6 @@ jobs:
 
     - name: Run tests
       run: npm test
-      # Add your test command here
 
   #release:
   #  runs-on: ubuntu-latest
@@ -50,11 +49,3 @@ jobs:
   #      args: "dist/index.js"
   #      zone_id: ${{ secrets.JSDLIVER_ZONE_ID }}
   #      access_token: ${{ secrets.JSDLEIVER_ACCESS_TOKEN }}
-
-  badges:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Add test badge to README
-      run: echo "![Tests](https://img.shields.io/github/workflow/status/bradhuang9999/TourGroup.js/Build,%20Test,%20Release,%20and%20Deploy/main?label=Tests)" >> README.md
-      # Replace YourUsername and YourRepositoryName with your GitHub username and repository name

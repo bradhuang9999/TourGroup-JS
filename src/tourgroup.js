@@ -449,7 +449,7 @@ class TourGroup extends Array {
     /* ************************************************************************* */
     
     /**
-     * Removes all child elements from the current element.
+     * Clears the inner HTML of each element in the collection.
      * @returns {TourGroup} The current TourGroup instance.
      * @example ToupGroup.at('.my-class').empty();
      */
@@ -461,7 +461,7 @@ class TourGroup extends Array {
     }
 
     /**
-     * Removes all elements from the tour group.
+     * Removes each element in the collection from the DOM.
      * @returns {TourGroup} The updated tour group object.
      * @example ToupGroup.at('.my-class').remove();
      */
