@@ -2,7 +2,7 @@
  * @fileoverview Unit tests for the TourGroup class.
  */
 
-import TourGroup from "../src/travel.js";
+import TourGroup from "../src/tourgroup.js";
 
 /**
  * Tests the id getter of the TourGroup class.
@@ -16,7 +16,7 @@ describe('TourGroup id getter', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#element1, #element2');
+        const elements = TourGroup.at('#element1, #element2');
         
         // Assert that the id getter returns the id of the first element
         expect(elements.id).toBe('element1');
@@ -37,7 +37,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#parent');
+        const elements = TourGroup.at('#parent');
         
         // Call the children method
         const children = elements.children();
@@ -58,7 +58,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#parent');
+        const elements = TourGroup.at('#parent');
         
         // Call the children method with a selector
         const children = elements.children('div');
@@ -79,7 +79,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#target');
+        const elements = TourGroup.at('#target');
         
         // Call the closest method with a selector
         const closestElement = elements.closest('#parent');
@@ -99,7 +99,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#target');
+        const elements = TourGroup.at('#target');
         
         // Call the closest method with a selector
         const closestElement = elements.closest('#parentx');
@@ -118,7 +118,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#child1, #child2');
+        const elements = TourGroup.at('#child1, #child2');
         
         // Call the parentElement method
         const parentElements = elements.parentElement();
@@ -138,7 +138,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#parent');
+        const elements = TourGroup.at('#parent');
         
         // Call the querySelectorAll method with a selector
         const children = elements.querySelectorAll('div.tmp-c');
@@ -158,7 +158,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#sibling1');
+        const elements = TourGroup.at('#sibling1');
         
         // Call the nextElementSibling() method
         const nextSibling = elements.nextElementSibling();
@@ -178,7 +178,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#sibling1');
+        const elements = TourGroup.at('#sibling1');
         
         // Call the next(selector) method with a selector
         const nextSibling = elements.next('.tmp-c');
@@ -200,7 +200,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#sibling1');
+        const elements = TourGroup.at('#sibling1');
         
         // Call the nextUntil(selector) method with a selector
         const nextSiblings = elements.nextUntil('.tmp-c');
@@ -233,7 +233,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('li.item-a');
+        const elements = TourGroup.at('li.item-a');
         
         // Call the offsetParent() method
         const offsetParent = elements.offsetParent();
@@ -266,7 +266,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('li.item-a');
+        const elements = TourGroup.at('li.item-a');
         
         // Call the parentElement() method
         const parentElement = elements.parentElement();
@@ -298,7 +298,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('li.item-a');
+        const elements = TourGroup.at('li.item-a');
         
         // Call the parentUntil(selector) method with a selector
         const parents = elements.parentUntil('.level-1');
@@ -330,7 +330,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('li.item-a');
+        const elements = TourGroup.at('li.item-a');
         
         // Call the parentUntil(selector) method with a selector
         const parents = elements.parentUntil('.level-1');
@@ -350,7 +350,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#sibling2');
+        const elements = TourGroup.at('#sibling2');
         
         // Call the previousElementSibling() method
         const prevSibling = elements.previousElementSibling();
@@ -370,7 +370,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#sibling1');
+        const elements = TourGroup.at('#sibling1');
         
         // Call the previousElementSibling() method
         const prevSibling = elements.previousElementSibling();
@@ -388,7 +388,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('p');
+        const elements = TourGroup.at('p');
         
         // Call the prev(selector) method with a selector
         const prevSibling = elements.prev();
@@ -406,7 +406,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('p');
+        const elements = TourGroup.at('p');
         
         // Call the prev(selector) method with a selector
         const prevSibling = elements.prev('.selected');
@@ -428,7 +428,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#sibling5');
+        const elements = TourGroup.at('#sibling5');
         
         // Call the prevUntil(selector) method with a selector
         const prevSiblings = elements.prevUntil('.tmp-c');
@@ -448,7 +448,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#sibling2');
+        const elements = TourGroup.at('#sibling2');
         
         // Call the siblings() method
         const siblings = elements.siblings();
@@ -466,7 +466,7 @@ describe('Tree Traversal', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#sibling2');
+        const elements = TourGroup.at('#sibling2');
         
         // Call the siblings() method
         const siblings = elements.siblings();

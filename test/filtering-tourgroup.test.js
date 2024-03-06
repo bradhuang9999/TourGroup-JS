@@ -1,4 +1,4 @@
-import TourGroup from "../src/travel.js";
+import TourGroup from "../src/tourgroup.js";
 
 describe("Filtering Traversal", () => {
     test("[not] filter", () => {
@@ -10,7 +10,7 @@ describe("Filtering Traversal", () => {
             </div>
         `;
         
-        const tourGroup = new TourGroup("div");
+        const tourGroup = TourGroup.at("div");
         const tourGroupExcluded = tourGroup.not(".tmp-c");
 
         expect(tourGroupExcluded.length).toBe(3);
@@ -29,7 +29,7 @@ describe("Filtering Traversal", () => {
             </div>
         `;
         
-        const tourGroup = new TourGroup("div");
+        const tourGroup = TourGroup.at("div");
         const tourGroupHas = tourGroup.has(".tmp-c");
 
         expect(tourGroupHas.map(e => e.id)).toEqual(["parent", "sibling1", "sibling3"]);
@@ -44,7 +44,7 @@ describe("Filtering Traversal", () => {
             </div>
         `;
         
-        const tourGroup = new TourGroup("div#parent div");
+        const tourGroup = TourGroup.at("div#parent div");
         const tourGroupFirst = tourGroup.first();
 
         expect(tourGroupFirst.id).toBe("sibling1");
@@ -59,7 +59,7 @@ describe("Filtering Traversal", () => {
             </div>
         `;
         
-        const tourGroup = new TourGroup("div#parent div");
+        const tourGroup = TourGroup.at("div#parent div");
         const tourGroupFirst = tourGroup.last();
 
         expect(tourGroupFirst.id).toBe("sibling3");
@@ -81,14 +81,14 @@ describe('TourGroup DOM manipulation functions', () => {
     });
 
     test('[insertAdjacentHTML] insertAdjacentHTML(position, text) should insert HTML adjacent to each element', () => {
-        const elements = new TourGroup('#sibling2');
+        const elements = TourGroup.at('#sibling2');
         elements.insertAdjacentHTML('afterend', '<div id="newSibling"></div>');
         const newSibling = document.getElementById('newSibling');
         expect(newSibling).not.toBeNull();
     });
 
     test('[appendHTML] appendHTML(text) should append HTML to the end of each element', () => {
-        const elements = new TourGroup('#parent');
+        const elements = TourGroup.at('#parent');
         elements.appendHTML('<div id="newSibling"></div>');
         const newSibling = document.getElementById('newSibling');
         expect(newSibling).not.toBeNull();
@@ -96,7 +96,7 @@ describe('TourGroup DOM manipulation functions', () => {
     });
 
     test('[prependHTML] prependHTML(text) should prepend HTML to the beginning of each element', () => {
-        const elements = new TourGroup('#parent');
+        const elements = TourGroup.at('#parent');
         elements.prependHTML('<div id="newSibling"></div>');
         const newSibling = document.getElementById('newSibling');
         expect(newSibling).not.toBeNull();
@@ -104,16 +104,16 @@ describe('TourGroup DOM manipulation functions', () => {
     });
 
     test('[innerHTML] innerHTML getter should return the inner HTML of the first element', () => {
-        const elements = new TourGroup('#sibling2');
+        const elements = TourGroup.at('#sibling2');
         expect(elements.innerHTML()).toBe('<span>bbb</span>');
     });
 
     test('[innerHTML] innerHTML setter should set the inner HTML for all elements', () => {
-        const elements = new TourGroup('#parent');
+        const elements = TourGroup.at('#parent');
         elements.innerHTML('<div id="newSibling"></div>');
         const newSibling = document.getElementById('newSibling');
         expect(newSibling).not.toBeNull();
-        expect(elements[0].innerHTML()).toBe('<div id="newSibling"></div>');
+        expect(elements[0].innerHTML).toBe('<div id="newSibling"></div>');
     });
 
     test('[outerHTML] should return the outer HTML of the first element in the TourGroup', () => {
@@ -125,7 +125,7 @@ describe('TourGroup DOM manipulation functions', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#child');
+        const elements = TourGroup.at('#child');
         
         // Call the outerHTML getter
         const outerHTML = elements.outerHTML();
@@ -144,7 +144,7 @@ describe('TourGroup DOM manipulation functions', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#child1, #child2');
+        const elements = TourGroup.at('#child1, #child2');
         
         // Set the outer HTML
         elements.outerHTML('<div>New Content</div>');
@@ -160,24 +160,24 @@ describe('TourGroup DOM manipulation functions', () => {
 
     /* innerText is not supported in jsdom    
     test('innerText getter should return the inner text of the first element', () => {
-        const elements = new TourGroup('#sibling2');
+        const elements = TourGroup.at('#sibling2');
         expect(elements.innerText()).toBe('bbb');
     });
 
     test('innerText setter should set the inner text for all elements', () => {
-        const elements = new TourGroup('#parent');
+        const elements = TourGroup.at('#parent');
         elements.innerText('New Text');
         expect(elements[0].innerText).toBe('New Text');
     });
     */
 
     test('[textContent] textContent getter should return the inner text of the first element', () => {
-        const elements = new TourGroup('#sibling2');
+        const elements = TourGroup.at('#sibling2');
         expect(elements.textContent()).toBe('bbb');
     });
 
     test('[textContent] textContent setter should set the inner text for all elements', () => {
-        const elements = new TourGroup('#parent');
+        const elements = TourGroup.at('#parent');
         elements.textContent('New Text');
         expect(elements[0].textContent).toBe('New Text');
     });
@@ -191,7 +191,7 @@ describe('TourGroup DOM manipulation functions', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#sibling1');
+        const elements = TourGroup.at('#sibling1');
         
         // Call the afterHTML method
         elements.afterHTML('<div id="newSibling">New Sibling</div>');
@@ -210,7 +210,7 @@ describe('TourGroup DOM manipulation functions', () => {
         `;
         
         // Create a new instance of TourGroup
-        const elements = new TourGroup('#sibling1');
+        const elements = TourGroup.at('#sibling1');
         
         // Call the beforeHTML method
         elements.beforeHTML('<div id="newSibling">New Sibling</div>');
