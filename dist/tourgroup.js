@@ -92,11 +92,31 @@ class TourGroup extends Array {
         return new TourGroup(selector, context);
     }
 
+    toTourGoupArr() {
+        return this.map(ele => new TourGroup(ele));
+    }
 
     /* ************************************************************************* */
     /* *************************** Tree Traversal ****************************** */
     /* ************************************************************************* */
+    
+    /**
+     * Gets the first element in the TourGroup as TourGroup.
+     * @param {*} index 
+     * @returns {TourGroup}
+     */
+    eq(index) {
+        return new TourGroup(this[index]);
+    }
 
+    /**
+     * Gets the first element in the TourGroup as DOM element.
+     * @param {*} index 
+     * @returns {DOMElement}
+     */
+    get(index) {
+        return this[index];
+    }
 
     /**
      * Get the children of each element in the set of matched elements, optionally filtered by a selector.
@@ -138,6 +158,15 @@ class TourGroup extends Array {
             return Array.from(ele.querySelectorAll(selector));
         });
         return new TourGroup(subEles);
+    }
+
+    /**
+     * Alias for querySelectorAll, similar to $.find(selector)
+     * @param {*} selector 
+     * @returns 
+     */
+    find(selector) {
+        return this.querySelectorAll(selector);
     }
 
     /**
@@ -327,7 +356,7 @@ class TourGroup extends Array {
      * @example ToupGroup.at('.my-class').first();
      */
     first() {
-        return this.length === 0 ? null : this[0];
+        return this.length === 0 ? null : new TourGroup(this[0]);
     }
 
     /**
@@ -336,7 +365,7 @@ class TourGroup extends Array {
      * @example ToupGroup.at('.my-class').last();
      */
     last() {
-        return this.length === 0 ? null : this[this.length-1];
+        return this.length === 0 ? null : new TourGroup(this[this.length-1]);
     }
 
 
@@ -359,6 +388,13 @@ class TourGroup extends Array {
         return this
     }
 
+    append() {
+        for(let ele of this) {
+            ele.append.apply(ele, arguments);
+        }
+        return this;
+    }
+
     /**
      * Appends HTML content to the end of each element in the TourGroup.
      * @param {string} text - The HTML content to be appended.
@@ -368,6 +404,13 @@ class TourGroup extends Array {
     appendHTML(text) {
         for(let ele of this) {
             ele.insertAdjacentHTML('beforeend', text);
+        }
+        return this;
+    }
+    
+    prepend() {
+        for(let ele of this) {
+            ele.prepend.apply(ele, arguments);
         }
         return this;
     }
@@ -490,7 +533,7 @@ class TourGroup extends Array {
     /* ************************************************************************* */
     
     /**
-     * Clears the inner HTML of each element in the collection.
+     * Removes all child elements from the current element.
      * @returns {TourGroup} The current TourGroup instance.
      * @example ToupGroup.at('.my-class').empty();
      */
@@ -502,7 +545,7 @@ class TourGroup extends Array {
     }
 
     /**
-     * Removes each element in the collection from the DOM.
+     * Removes all elements from the tour group.
      * @returns {TourGroup} The updated tour group object.
      * @example ToupGroup.at('.my-class').remove();
      */
@@ -608,6 +651,13 @@ class TourGroup extends Array {
         return this;
     }
 
+    removeAttribute(name) {
+        for(let ele of this) {
+            ele.removeAttribute(name);
+        }
+        return this;
+    }
+
     /**
      * Sets or gets the value of the first HTMLInputElement in the collection.
      * @param {string} [value] - The value to set.
@@ -619,9 +669,7 @@ class TourGroup extends Array {
         if (!arguments.length)
             return this.length === 0 ? null : this[0].value;
         for(let ele of this) {
-            if (ele instanceof HTMLInputElement) {
-                ele.value = value;
-            }
+            ele.value = value;
         }
         return this;
     }
@@ -663,10 +711,38 @@ class TourGroup extends Array {
         }
         return this;
     }
+    
+    /**
+     * Sets or gets the specified property of the first element in the collection.
+     * @param {*} property - The property name.
+     * @param {*} value - The property value.
+     * @returns - The property value of the first element in the collection, or the current instance of the collection.
+     * @example ToupGroup.at('.my-class').prop('disabled', true);
+     * @example var disabled = ToupGroup.at('.my-class').prop('disabled');
+     */
+    prop(property, value) {
+        if (arguments.length === 1) {
+            return this.length === 0 ? null : this[0][property];
+        }
+        for(let ele of this) {
+            ele[property] = value;
+        }
+        return this;
+    }
 
     /* ************************************************************************* */
     /* *************************** Event Handling ****************************** */
     /* ************************************************************************* */
+
+    on(_, selector) {
+        if(isString(selector)) {
+            this.addDelegateEventListener.apply(this, arguments);
+        }
+        else {
+            this.addEventListener.apply(this, arguments);
+        }
+        return this;
+    }
 
     /**
      * Adds an event listener to each element in the TourGroup.
@@ -697,8 +773,14 @@ class TourGroup extends Array {
      */
     addDelegateEventListener(event, selector, func, useCapture) {
         const handler = e => {
-            if (e.target.matches(selector)) {
-                func(e);
+            let currentElement = e.target;
+
+            while (currentElement && currentElement !== e.currentTarget) {
+                if (currentElement.matches(selector)) {
+                    func.call(currentElement, e);  // 在匹配到目标元素时调用回调函数
+                    break;  // 匹配到目标元素后，停止进一步的查找
+                }
+                currentElement = currentElement.parentElement;  // 向上查找父元素
             }
         };
         for(let ele of this) {
