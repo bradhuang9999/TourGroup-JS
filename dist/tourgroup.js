@@ -320,9 +320,15 @@ class TourGroup extends Array {
      * @returns {TourGroup} A new TourGroup instance containing the unique sibling elements.
      * @example ToupGroup.at('.my-class').siblings();
      */
-    siblings() {
+    siblings(selector) {
         return unique(this.flatMap(ele => {
-            return TourGroup.from(ele.parentElement.children).filter(child => child !== ele);
+            var siblings = TourGroup.from(ele.parentElement.children);
+            if (selector) {
+                return siblings.filter(sibling => sibling !== ele && sibling.matches(selector));
+            }
+            else {
+                return siblings.filter(sibling => sibling !== ele);
+            }
         }));
     }
 

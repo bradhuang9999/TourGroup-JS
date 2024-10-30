@@ -473,7 +473,27 @@ describe('Tree Traversal', () => {
         
         // Assert that the siblings are the correct elements
         expect(siblings.map(e => e.id)).toEqual([]);
-    });    
+    });   
+    
+    test('[siblings] should return the siblings of each element in the set of matched elements', () => {
+        // Create a test DOM structure
+        document.body.innerHTML = `
+            <div id="parent">
+                <div id="sibling1"></div>
+                <div id="sibling2" class="tmp-c"></div>
+                <div id="sibling3"></div>
+            </div>
+        `;
+        
+        // Create a new instance of TourGroup
+        const elements = TourGroup.at('#sibling1');
+        
+        // Call the siblings(selector) method with a selector
+        const siblings = elements.siblings('.tmp-c');
+        
+        // Assert that the siblings are the correct elements
+        expect(siblings[0].id).toBe('sibling2');
+    });
 });
 
 

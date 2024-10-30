@@ -1,6 +1,6 @@
 {
     "name": "tourgroup-js",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "Master DOM manipulation effortlessly with chaining, just like native browser functions",
     "license": "MIT",
     "browser": "dist/tourgroup.min.js",
